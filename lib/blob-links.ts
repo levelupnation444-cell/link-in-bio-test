@@ -1,6 +1,6 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
-import { head, put } from "@vercel/blob";
+import { BlobNotFoundError, head, put } from "@vercel/blob";
 import { defaultLinkData } from "./default-links";
 import type { LinkData } from "./types";
 
@@ -39,6 +39,14 @@ async function writeLocalLinks(data: LinkData) {
   await writeFile(localFilePath, JSON.stringify(data, null, 2));
 }
 
+async function writeLocalLinksIfPossible(data: LinkData) {
+  if (process.env.VERCEL) {
+    return;
+  }
+
+  await writeLocalLinks(data);
+}
+
 export function hasBlobToken() {
   return Boolean(process.env.BLOB_READ_WRITE_TOKEN);
 }
@@ -60,16 +68,33 @@ export async function getLinks() {
 
     const json = (await response.json()) as LinkData;
     return normalizeLinkData(json);
-  } catch {
+  } catch (error) {
     const local = await readLocalLinks();
-    await persistLinks(local);
+
+    if (error instanceof BlobNotFoundError) {
+      await put(blobPath, JSON.stringify(local, null, 2), {
+        access: "public",
+        addRandomSuffix: false,
+        allowOverwrite: true,
+        contentType: "application/json",
+        token: process.env.BLOB_READ_WRITE_TOKEN,
+      });
+    }
+
     return local;
   }
 }
 
 export async function persistLinks(data: LinkData) {
   const normalized = normalizeLinkData(data);
-  await writeLocalLinks(normalized);
+
+  if (!hasBlobToken() && process.env.VERCEL) {
+    throw new Error(
+      "BLOB_READ_WRITE_TOKEN is required for dashboard writes on Vercel.",
+    );
+  }
+
+  await writeLocalLinksIfPossible(normalized);
 
   if (hasBlobToken()) {
     await put(blobPath, JSON.stringify(normalized, null, 2), {

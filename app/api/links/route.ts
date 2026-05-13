@@ -15,7 +15,17 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const body = (await request.json()) as LinkData;
-  const saved = await persistLinks(body);
-  return NextResponse.json(saved);
+  try {
+    const body = (await request.json()) as LinkData;
+    const saved = await persistLinks(body);
+    return NextResponse.json(saved);
+  } catch (error) {
+    return NextResponse.json(
+      {
+        error:
+          error instanceof Error ? error.message : "Unable to save link data.",
+      },
+      { status: 500 },
+    );
+  }
 }

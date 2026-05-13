@@ -3,6 +3,15 @@
   "bioHtml": "I&apos;m 18. God gave me purpose before I had a plan.<br /><strong>Yours is waiting.</strong> Free 7-day blueprint. ↓",
   "sectionLabel": "Join the Nation",
   "footerVerse": "\"Before I formed you in the womb I knew you.\" — Jeremiah 1:5",
+  "theme": {
+    "background": "#080808",
+    "backgroundSecondary": "#0d0d0d",
+    "foreground": "#f5f0e8",
+    "foregroundDim": "rgba(245, 240, 232, 0.6)",
+    "accent": "#c9a84c",
+    "accentLight": "#e8c46a",
+    "accentDark": "#8a6e2f"
+  },
   "socials": [
     {
       "id": "instagram",

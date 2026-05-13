@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import { ParticleBackground } from "@/components/particle-background";
 import { SocialIcon } from "@/components/social-icons";
 import { getLinks } from "@/lib/blob-links";
@@ -8,7 +9,22 @@ export default async function Home() {
   const data = await getLinks();
 
   return (
-    <main className="lun-shell">
+    <main
+      className="lun-shell"
+      style={
+        {
+          "--background": data.theme.background,
+          "--black": data.theme.background,
+          "--black-2": data.theme.backgroundSecondary,
+          "--foreground": data.theme.foreground,
+          "--white": data.theme.foreground,
+          "--white-dim": data.theme.foregroundDim,
+          "--gold": data.theme.accent,
+          "--gold-light": data.theme.accentLight,
+          "--gold-dark": data.theme.accentDark,
+        } as CSSProperties
+      }
+    >
       <ParticleBackground />
       <div className="lun-glow" />
 
@@ -16,7 +32,15 @@ export default async function Home() {
         <div className="lun-logo-wrap">
           <div className="lun-logo-ring" />
           <div className="lun-logo-ring-2" />
-          <div className="lun-logo-fallback">LN</div>
+          {data.logoUpdatedAt ? (
+            <img
+              className="lun-logo-img"
+              src={`/api/logo?v=${encodeURIComponent(data.logoUpdatedAt)}`}
+              alt={`${data.profileName} logo`}
+            />
+          ) : (
+            <div className="lun-logo-fallback">LN</div>
+          )}
         </div>
 
         <div className="lun-profile-name">{data.profileName}</div>

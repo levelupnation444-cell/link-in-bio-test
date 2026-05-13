@@ -132,6 +132,16 @@ textarea {
   font-weight: 900;
 }
 
+.lun-logo-img {
+  width: 140px;
+  height: 140px;
+  border-radius: 9999px;
+  object-fit: cover;
+  border: 2px solid rgba(201, 168, 76, 0.4);
+  box-shadow: 0 0 40px rgba(201, 168, 76, 0.15), 0 0 80px rgba(201, 168, 76, 0.05);
+  display: block;
+}
+
 .lun-profile-name {
   font-family: var(--font-cinzel), serif;
   font-size: 22px;

@@ -2,7 +2,7 @@ export type SocialLink = {
   id: string;
   label: string;
   href: string;
-  icon: "instagram" | "tiktok" | "discord" | "youtube";
+  icon: string;
 };
 
 export type MainLink = {
@@ -20,6 +20,16 @@ export type LinkData = {
   bioHtml: string;
   sectionLabel: string;
   footerVerse: string;
+  logoUpdatedAt?: string;
+  theme: {
+    background: string;
+    backgroundSecondary: string;
+    foreground: string;
+    foregroundDim: string;
+    accent: string;
+    accentLight: string;
+    accentDark: string;
+  };
   socials: SocialLink[];
   links: MainLink[];
 };

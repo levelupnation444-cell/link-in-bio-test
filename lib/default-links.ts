@@ -7,6 +7,16 @@ export const defaultLinkData: LinkData = {
   sectionLabel: "Join the Nation",
   footerVerse:
     '"Before I formed you in the womb I knew you." — Jeremiah 1:5',
+  logoUpdatedAt: "",
+  theme: {
+    background: "#080808",
+    backgroundSecondary: "#0d0d0d",
+    foreground: "#f5f0e8",
+    foregroundDim: "rgba(245, 240, 232, 0.6)",
+    accent: "#c9a84c",
+    accentLight: "#e8c46a",
+    accentDark: "#8a6e2f",
+  },
   socials: [
     { id: "instagram", label: "Instagram", href: "#", icon: "instagram" },
     { id: "tiktok", label: "TikTok", href: "#", icon: "tiktok" },

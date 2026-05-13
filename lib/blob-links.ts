@@ -5,7 +5,9 @@ import { defaultLinkData } from "./default-links";
 import type { LinkData } from "./types";
 
 const localFilePath = path.join(process.cwd(), "data", "links.json");
+const localLogoPath = path.join(process.cwd(), "public", "uploaded-logo.webp");
 const blobPath = "links.json";
+const logoBlobPath = "uploaded-logo.webp";
 
 async function ensureLocalFile() {
   await mkdir(path.dirname(localFilePath), { recursive: true });
@@ -23,8 +25,41 @@ function normalizeLinkData(input: Partial<LinkData> | null | undefined): LinkDat
     bioHtml: input?.bioHtml ?? defaultLinkData.bioHtml,
     sectionLabel: input?.sectionLabel ?? defaultLinkData.sectionLabel,
     footerVerse: input?.footerVerse ?? defaultLinkData.footerVerse,
-    socials: input?.socials ?? defaultLinkData.socials,
-    links: input?.links ?? defaultLinkData.links,
+    logoUpdatedAt: input?.logoUpdatedAt ?? defaultLinkData.logoUpdatedAt,
+    theme: {
+      background: input?.theme?.background ?? defaultLinkData.theme.background,
+      backgroundSecondary:
+        input?.theme?.backgroundSecondary ??
+        defaultLinkData.theme.backgroundSecondary,
+      foreground: input?.theme?.foreground ?? defaultLinkData.theme.foreground,
+      foregroundDim:
+        input?.theme?.foregroundDim ?? defaultLinkData.theme.foregroundDim,
+      accent: input?.theme?.accent ?? defaultLinkData.theme.accent,
+      accentLight:
+        input?.theme?.accentLight ?? defaultLinkData.theme.accentLight,
+      accentDark: input?.theme?.accentDark ?? defaultLinkData.theme.accentDark,
+    },
+    socials:
+      input?.socials?.length
+        ? input.socials.map((social, index) => ({
+            id: social.id || `social-${index + 1}`,
+            label: social.label ?? "",
+            href: social.href ?? "#",
+            icon: social.icon ?? "link",
+          }))
+        : defaultLinkData.socials,
+    links:
+      input?.links?.length
+        ? input.links.map((link, index) => ({
+            id: link.id || `link-${index + 1}`,
+            title: link.title ?? "",
+            subtitle: link.subtitle ?? "",
+            href: link.href ?? "#",
+            icon: link.icon ?? "🔗",
+            featured: Boolean(link.featured),
+            badge: link.badge ?? "",
+          }))
+        : defaultLinkData.links,
   };
 }
 
@@ -61,6 +96,65 @@ async function writeLocalLinksIfPossible(data: LinkData) {
 
 export function hasBlobToken() {
   return Boolean(process.env.BLOB_READ_WRITE_TOKEN);
+}
+
+export async function getLogoAsset() {
+  if (hasBlobToken()) {
+    const blob = await get(logoBlobPath, {
+      access: "private",
+      useCache: false,
+      token: process.env.BLOB_READ_WRITE_TOKEN,
+    });
+
+    if (!blob || !blob.stream) {
+      return null;
+    }
+
+    return {
+      stream: blob.stream,
+      contentType: blob.blob.contentType || "image/webp",
+    };
+  }
+
+  try {
+    const buffer = await readFile(localLogoPath);
+    return {
+      stream: new ReadableStream({
+        start(controller) {
+          controller.enqueue(buffer);
+          controller.close();
+        },
+      }),
+      contentType: "image/webp",
+    };
+  } catch {
+    return null;
+  }
+}
+
+export async function saveLogoAsset(data: ArrayBuffer, contentType: string) {
+  const buffer = Buffer.from(data);
+
+  if (!hasBlobToken() && process.env.VERCEL) {
+    throw new Error(
+      "BLOB_READ_WRITE_TOKEN is required for logo uploads on Vercel.",
+    );
+  }
+
+  if (!process.env.VERCEL) {
+    await mkdir(path.dirname(localLogoPath), { recursive: true });
+    await writeFile(localLogoPath, buffer);
+  }
+
+  if (hasBlobToken()) {
+    await put(logoBlobPath, buffer, {
+      access: "private",
+      addRandomSuffix: false,
+      allowOverwrite: true,
+      contentType,
+      token: process.env.BLOB_READ_WRITE_TOKEN,
+    });
+  }
 }
 
 export async function getLinks() {

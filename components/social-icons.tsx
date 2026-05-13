@@ -3,7 +3,7 @@ import type { SocialLink } from "@/lib/types";
 
 function baseSvg(props: SVGProps<SVGSVGElement>) {
   return {
-    "aria-hidden": "true",
+    "aria-hidden": true,
     fill: "none",
     ...props,
   };

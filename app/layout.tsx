@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Barlow, Barlow_Condensed, Cinzel } from "next/font/google";
 import "./globals.css";
+import { PostHog } from "@/components/posthog";
 
 const barlow = Barlow({
   variable: "--font-barlow",
@@ -35,7 +36,10 @@ export default function RootLayout({
       lang="en"
       className={`${barlow.variable} ${barlowCondensed.variable} ${cinzel.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        <PostHog />
+        {children}
+      </body>
     </html>
   );
 }

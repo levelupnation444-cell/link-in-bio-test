@@ -7,6 +7,8 @@ export const dynamic = "force-dynamic";
 
 export default async function Home() {
   const data = await getLinks();
+  const cinematicBio =
+    "I&apos;m 18. <strong>God</strong> gave me <strong>purpose</strong> before I had a plan. Now it&apos;s your turn.<br/>Your free 7-day <strong>blueprint</strong> is waiting to shape your <strong>future</strong> through faith and <strong>discipline</strong>.";
 
   return (
     <main
@@ -43,7 +45,7 @@ export default async function Home() {
           )}
         </div>
 
-        <div className="lun-profile-name">{data.profileName}</div>
+        <div className="lun-profile-name">LEVEL UP NATION</div>
 
         <div className="lun-divider">
           <div className="lun-divider-line" />
@@ -53,7 +55,7 @@ export default async function Home() {
 
         <p
           className="lun-bio"
-          dangerouslySetInnerHTML={{ __html: data.bioHtml }}
+          dangerouslySetInnerHTML={{ __html: cinematicBio }}
         />
 
         <div className="lun-socials">
@@ -89,11 +91,10 @@ export default async function Home() {
                 <div className="lun-hero-content">
                   <span className="lun-hero-kicker">7-DAY BLUEPRINT</span>
                   <h2 className="lun-hero-title">
-                    Find Your God-Given Purpose in 7 Days
+                    CLAIM YOUR FREE 7-DAY PURPOSE BLUEPRINT
                   </h2>
                   <p className="lun-hero-subtitle">
-                    Build faith, discipline, and direction with a practical
-                    biblical game plan.
+                    Build discipline. Strengthen faith. Find direction.
                   </p>
                   <span className="lun-hero-cta">
                     START FREE <span aria-hidden>→</span>

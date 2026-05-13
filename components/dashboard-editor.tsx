@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useRef, useState, useTransition } from "react";
 import type { LinkData, MainLink, SocialLink } from "@/lib/types";
 
 type Props = {
@@ -39,7 +39,10 @@ function newLink(): MainLink {
 export function DashboardEditor({ initialData }: Props) {
   const [data, setData] = useState(initialData);
   const [message, setMessage] = useState<string>("");
+  const [uploadMessage, setUploadMessage] = useState<string>("");
+  const [isUploading, setIsUploading] = useState(false);
   const [isPending, startTransition] = useTransition();
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const save = () => {
     setMessage("");
@@ -154,6 +157,74 @@ export function DashboardEditor({ initialData }: Props) {
     }));
   };
 
+  const compressImage = async (file: File) => {
+    const bitmap = await createImageBitmap(file);
+    const maxSize = 720;
+    const scale = Math.min(1, maxSize / Math.max(bitmap.width, bitmap.height));
+    const width = Math.max(1, Math.round(bitmap.width * scale));
+    const height = Math.max(1, Math.round(bitmap.height * scale));
+
+    const canvas = document.createElement("canvas");
+    canvas.width = width;
+    canvas.height = height;
+
+    const context = canvas.getContext("2d");
+
+    if (!context) {
+      throw new Error("Canvas is not available in this browser.");
+    }
+
+    context.drawImage(bitmap, 0, 0, width, height);
+
+    const blob = await new Promise<Blob | null>((resolve) => {
+      canvas.toBlob(resolve, "image/webp", 0.82);
+    });
+
+    bitmap.close();
+
+    if (!blob) {
+      throw new Error("Unable to compress image.");
+    }
+
+    return new File([blob], "uploaded-logo.webp", { type: "image/webp" });
+  };
+
+  const uploadLogo = async (file: File) => {
+    setUploadMessage("");
+    setIsUploading(true);
+
+    try {
+      const compressed = await compressImage(file);
+      const formData = new FormData();
+      formData.append("file", compressed);
+
+      const response = await fetch("/api/logo", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        const payload = (await response.json().catch(() => null)) as
+          | { error?: string }
+          | null;
+        throw new Error(payload?.error || "Logo upload failed.");
+      }
+
+      const next = (await response.json()) as LinkData;
+      setData(next);
+      setUploadMessage("Logo uploaded.");
+    } catch (error) {
+      setUploadMessage(
+        error instanceof Error ? error.message : "Logo upload failed.",
+      );
+    } finally {
+      setIsUploading(false);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+    }
+  };
+
   return (
     <div className="dashboard-grid pt-6">
       <section className="dashboard-grid rounded-2xl border border-white/10 p-5">
@@ -192,6 +263,48 @@ export function DashboardEditor({ initialData }: Props) {
             onChange={(event) => updateTopLevel("footerVerse", event.target.value)}
           />
         </label>
+      </section>
+
+      <section className="dashboard-grid rounded-2xl border border-white/10 p-5">
+        <div className="flex items-center justify-between gap-4">
+          <h2 className="text-xl font-semibold text-white">Logo</h2>
+          <p className="text-sm text-white/55">
+            Uploads are compressed in the browser and stored in Blob.
+          </p>
+        </div>
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
+          <div className="lun-logo-fallback shrink-0 overflow-hidden">
+            {data.logoUpdatedAt ? (
+              <img
+                className="lun-logo-img"
+                src={`/api/logo?v=${encodeURIComponent(data.logoUpdatedAt)}`}
+                alt="Current logo"
+              />
+            ) : (
+              "LN"
+            )}
+          </div>
+          <div className="dashboard-grid flex-1 gap-3">
+            <input
+              ref={fileInputRef}
+              className="dashboard-input"
+              type="file"
+              accept="image/png,image/jpeg,image/webp,image/avif"
+              onChange={(event) => {
+                const file = event.target.files?.[0];
+                if (file) {
+                  void uploadLogo(file);
+                }
+              }}
+            />
+            <p className="text-sm text-white/65">
+              Best results: square image, at least 400x400.
+            </p>
+            <p className="text-sm text-white/65">
+              {uploadMessage || (isUploading ? "Uploading..." : "No new upload yet.")}
+            </p>
+          </div>
+        </div>
       </section>
 
       <section className="dashboard-grid rounded-2xl border border-white/10 p-5">

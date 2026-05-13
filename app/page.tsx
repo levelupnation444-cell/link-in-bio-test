@@ -75,23 +75,47 @@ export default async function Home() {
 
         <div className="lun-links">
           {data.links.map((link) => (
-            <a
-              key={link.id}
-              href={link.href}
-              className={`lun-link-btn${link.featured ? " featured" : ""}`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {link.featured && link.badge ? (
-                <div className="lun-featured-badge">{link.badge}</div>
-              ) : null}
-              <div className="lun-link-icon">{link.icon}</div>
-              <div className="lun-link-text">
-                <span className="lun-link-title">{link.title}</span>
-                <span className="lun-link-sub">{link.subtitle}</span>
-              </div>
-              <span className="lun-link-arrow">→</span>
-            </a>
+            link.featured ? (
+              <a
+                key={link.id}
+                href={link.href}
+                className="lun-hero-banner"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <div className="lun-hero-rays" />
+                <div className="lun-hero-cross" />
+                <div className="lun-hero-overlay" />
+                <div className="lun-hero-content">
+                  <span className="lun-hero-kicker">7-DAY BLUEPRINT</span>
+                  <h2 className="lun-hero-title">
+                    Find Your God-Given Purpose in 7 Days
+                  </h2>
+                  <p className="lun-hero-subtitle">
+                    Build faith, discipline, and direction with a practical
+                    biblical game plan.
+                  </p>
+                  <span className="lun-hero-cta">
+                    START FREE <span aria-hidden>→</span>
+                  </span>
+                </div>
+              </a>
+            ) : (
+              <a
+                key={link.id}
+                href={link.href}
+                className="lun-link-btn"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <div className="lun-link-icon">{link.icon}</div>
+                <div className="lun-link-text">
+                  <span className="lun-link-title">{link.title}</span>
+                  <span className="lun-link-sub">{link.subtitle}</span>
+                </div>
+                <span className="lun-link-arrow">→</span>
+              </a>
+            )
           ))}
         </div>
 

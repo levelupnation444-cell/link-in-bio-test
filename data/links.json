@@ -1,0 +1,64 @@
+{
+  "profileName": "LEVEL UP NATION",
+  "bioHtml": "I&apos;m 18. God gave me purpose before I had a plan.<br /><strong>Yours is waiting.</strong> Free 7-day blueprint. ↓",
+  "sectionLabel": "Join the Nation",
+  "footerVerse": "\"Before I formed you in the womb I knew you.\" — Jeremiah 1:5",
+  "socials": [
+    {
+      "id": "instagram",
+      "label": "Instagram",
+      "href": "#",
+      "icon": "instagram"
+    },
+    {
+      "id": "tiktok",
+      "label": "TikTok",
+      "href": "#",
+      "icon": "tiktok"
+    },
+    {
+      "id": "discord",
+      "label": "Discord",
+      "href": "#",
+      "icon": "discord"
+    },
+    {
+      "id": "youtube",
+      "label": "YouTube",
+      "href": "#",
+      "icon": "youtube"
+    }
+  ],
+  "links": [
+    {
+      "id": "blueprint",
+      "title": "Get My 7-Day Purpose Blueprint",
+      "subtitle": "Find your purpose. Walk with God. Instantly.",
+      "href": "#",
+      "icon": "🔥",
+      "featured": true,
+      "badge": "FREE"
+    },
+    {
+      "id": "ebook",
+      "title": "Level Up Nation Ebook",
+      "subtitle": "Biblical strategies for life, mindset & money",
+      "href": "#",
+      "icon": "📖"
+    },
+    {
+      "id": "community",
+      "title": "Join the Private Community",
+      "subtitle": "Nation's HQ — faith, growth & accountability",
+      "href": "#",
+      "icon": "⚡"
+    },
+    {
+      "id": "video",
+      "title": "Watch My Latest Video",
+      "subtitle": "God, purpose & leveling up — new drops weekly",
+      "href": "#",
+      "icon": "✝️"
+    }
+  ]
+}

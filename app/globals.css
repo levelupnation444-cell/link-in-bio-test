@@ -1,0 +1,514 @@
+@import "tailwindcss";
+
+:root {
+  --background: #080808;
+  --foreground: #f5f0e8;
+  --black: #080808;
+  --black-2: #0d0d0d;
+  --gold: #c9a84c;
+  --gold-light: #e8c46a;
+  --gold-dark: #8a6e2f;
+  --white: #f5f0e8;
+  --white-dim: rgba(245, 240, 232, 0.6);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-barlow);
+  --font-display: var(--font-cinzel);
+  --font-condensed: var(--font-barlow-condensed);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100%;
+  margin: 0;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-barlow), sans-serif;
+  overflow-x: hidden;
+}
+
+body {
+  background:
+    radial-gradient(circle at top, rgba(201, 168, 76, 0.1), transparent 30%),
+    linear-gradient(180deg, var(--black), var(--black-2));
+}
+
+a {
+  color: inherit;
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+.lun-shell {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+.lun-particles {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.lun-glow {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(ellipse at center, rgba(201, 168, 76, 0.08) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.lun-container {
+  position: relative;
+  z-index: 1;
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 48px 24px 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.lun-logo-wrap {
+  position: relative;
+  width: 140px;
+  height: 140px;
+  margin-bottom: 24px;
+  animation: floatLogo 4s ease-in-out infinite;
+}
+
+.lun-logo-ring,
+.lun-logo-ring-2 {
+  position: absolute;
+  border-radius: 9999px;
+  border: 1px solid rgba(201, 168, 76, 0.2);
+  animation: ringPulse 3s ease-in-out infinite;
+}
+
+.lun-logo-ring {
+  inset: -8px;
+}
+
+.lun-logo-ring-2 {
+  inset: -16px;
+  border-color: rgba(201, 168, 76, 0.08);
+  animation-delay: 0.5s;
+}
+
+.lun-logo-fallback {
+  width: 140px;
+  height: 140px;
+  border-radius: 9999px;
+  border: 2px solid rgba(201, 168, 76, 0.4);
+  background: rgba(201, 168, 76, 0.1);
+  box-shadow: 0 0 40px rgba(201, 168, 76, 0.15), 0 0 80px rgba(201, 168, 76, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gold);
+  font-family: var(--font-cinzel), serif;
+  font-size: 32px;
+  font-weight: 900;
+}
+
+.lun-profile-name {
+  font-family: var(--font-cinzel), serif;
+  font-size: 22px;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  color: var(--gold-light);
+  text-align: center;
+  margin-bottom: 6px;
+  animation: fadeUp 0.8s ease 0.2s both;
+}
+
+.lun-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 10px 0 16px;
+  width: 100%;
+  max-width: 320px;
+  animation: fadeUp 0.8s ease 0.3s both;
+}
+
+.lun-divider-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold-dark), transparent);
+}
+
+.lun-divider-diamond {
+  width: 6px;
+  height: 6px;
+  background: var(--gold);
+  transform: rotate(45deg);
+}
+
+.lun-bio {
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--white-dim);
+  text-align: center;
+  line-height: 1.7;
+  max-width: 320px;
+  margin-bottom: 8px;
+  animation: fadeUp 0.8s ease 0.4s both;
+}
+
+.lun-bio strong {
+  color: var(--gold-light);
+  font-weight: 600;
+}
+
+.lun-socials {
+  display: flex;
+  gap: 20px;
+  margin: 20px 0 36px;
+  animation: fadeUp 0.8s ease 0.5s both;
+}
+
+.lun-social-btn {
+  width: 42px;
+  height: 42px;
+  border-radius: 9999px;
+  border: 1px solid rgba(201, 168, 76, 0.25);
+  background: rgba(201, 168, 76, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gold);
+  text-decoration: none;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.lun-social-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(201, 168, 76, 0.2), transparent);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.lun-social-btn:hover {
+  border-color: var(--gold);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(201, 168, 76, 0.2);
+}
+
+.lun-social-btn:hover::before {
+  opacity: 1;
+}
+
+.lun-section-label {
+  font-family: var(--font-barlow-condensed), sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold-dark);
+  margin-bottom: 16px;
+  animation: fadeUp 0.8s ease 0.6s both;
+}
+
+.lun-links {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.lun-link-btn {
+  position: relative;
+  width: 100%;
+  padding: 18px 24px;
+  background: rgba(201, 168, 76, 0.04);
+  border: 1px solid rgba(201, 168, 76, 0.15);
+  border-radius: 4px;
+  color: var(--white);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  transition: all 0.3s ease;
+  overflow: hidden;
+  cursor: pointer;
+  animation: fadeUp 0.8s ease both;
+}
+
+.lun-link-btn:nth-child(1) {
+  animation-delay: 0.7s;
+}
+
+.lun-link-btn:nth-child(2) {
+  animation-delay: 0.8s;
+}
+
+.lun-link-btn:nth-child(3) {
+  animation-delay: 0.9s;
+}
+
+.lun-link-btn:nth-child(4) {
+  animation-delay: 1s;
+}
+
+.lun-link-btn::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(180deg, transparent, var(--gold), transparent);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.lun-link-btn::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(201, 168, 76, 0.06) 0%, transparent 100%);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.lun-link-btn:hover {
+  border-color: rgba(201, 168, 76, 0.4);
+  transform: translateX(4px);
+  box-shadow: -4px 0 24px rgba(201, 168, 76, 0.08), 0 4px 24px rgba(0, 0, 0, 0.4);
+}
+
+.lun-link-btn:hover::before,
+.lun-link-btn:hover::after {
+  opacity: 1;
+}
+
+.lun-link-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 3px;
+  background: rgba(201, 168, 76, 0.08);
+  border: 1px solid rgba(201, 168, 76, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.lun-link-text,
+.lun-link-arrow {
+  position: relative;
+  z-index: 1;
+}
+
+.lun-link-text {
+  flex: 1;
+}
+
+.lun-link-title {
+  font-family: var(--font-barlow-condensed), sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--white);
+  display: block;
+  margin-bottom: 2px;
+}
+
+.lun-link-sub {
+  font-size: 12px;
+  color: var(--white-dim);
+  font-weight: 300;
+}
+
+.lun-link-arrow {
+  color: var(--gold);
+  font-size: 18px;
+  opacity: 0.5;
+  transition: all 0.3s;
+}
+
+.lun-link-btn:hover .lun-link-arrow {
+  opacity: 1;
+  transform: translateX(4px);
+}
+
+.lun-link-btn.featured {
+  background: linear-gradient(135deg, rgba(201, 168, 76, 0.12), rgba(201, 168, 76, 0.04));
+  border-color: rgba(201, 168, 76, 0.35);
+  padding: 22px 24px;
+}
+
+.lun-link-btn.featured .lun-link-title {
+  color: var(--gold-light);
+  font-size: 16px;
+}
+
+.lun-featured-badge {
+  position: absolute;
+  top: -1px;
+  right: 20px;
+  background: var(--gold);
+  color: var(--black);
+  font-family: var(--font-barlow-condensed), sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 0 0 4px 4px;
+}
+
+.lun-footer {
+  margin-top: 48px;
+  text-align: center;
+  animation: fadeUp 0.8s ease 1.2s both;
+}
+
+.lun-footer-verse {
+  font-size: 12px;
+  font-style: italic;
+  color: rgba(201, 168, 76, 0.4);
+  line-height: 1.6;
+}
+
+.dashboard-shell {
+  min-height: 100vh;
+  padding: 32px 20px 64px;
+  background:
+    radial-gradient(circle at top left, rgba(201, 168, 76, 0.1), transparent 25%),
+    linear-gradient(180deg, #080808, #111);
+}
+
+.dashboard-card {
+  width: min(1080px, 100%);
+  margin: 0 auto;
+  background: rgba(10, 10, 10, 0.82);
+  border: 1px solid rgba(201, 168, 76, 0.16);
+  border-radius: 18px;
+  backdrop-filter: blur(20px);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.4);
+}
+
+.dashboard-grid {
+  display: grid;
+  gap: 18px;
+}
+
+.dashboard-form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 14px;
+}
+
+.dashboard-input,
+.dashboard-textarea {
+  width: 100%;
+  border-radius: 12px;
+  border: 1px solid rgba(201, 168, 76, 0.18);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--white);
+  padding: 12px 14px;
+}
+
+.dashboard-textarea {
+  min-height: 108px;
+  resize: vertical;
+}
+
+.dashboard-input:focus,
+.dashboard-textarea:focus {
+  outline: 1px solid rgba(232, 196, 106, 0.8);
+  border-color: rgba(232, 196, 106, 0.8);
+}
+
+.dashboard-button {
+  border: 1px solid rgba(201, 168, 76, 0.3);
+  background: linear-gradient(135deg, rgba(201, 168, 76, 0.22), rgba(201, 168, 76, 0.08));
+  color: var(--white);
+  border-radius: 9999px;
+  padding: 11px 18px;
+  cursor: pointer;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.dashboard-button:hover {
+  transform: translateY(-1px);
+  border-color: rgba(232, 196, 106, 0.7);
+}
+
+.dashboard-button.secondary {
+  background: transparent;
+}
+
+@keyframes floatLogo {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes ringPulse {
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.03);
+  }
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 640px) {
+  .lun-container {
+    padding-inline: 18px;
+  }
+
+  .dashboard-shell {
+    padding-inline: 14px;
+  }
+}

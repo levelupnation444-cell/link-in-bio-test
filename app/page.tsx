@@ -8,7 +8,7 @@ export const dynamic = "force-dynamic";
 export default async function Home() {
   const data = await getLinks();
   const cinematicBio =
-    "I&apos;m 18. <strong>God</strong> gave me <strong>purpose</strong> before I had a plan. Now it&apos;s your turn.<br/>Your free 7-day <strong>blueprint</strong> is waiting to shape your <strong>future</strong> through faith and <strong>discipline</strong>.";
+    "I&apos;m 18. <strong>God</strong> gave me <strong>purpose</strong> before I had a plan.<br/><strong>Your free 7-day blueprint is waiting.</strong>";
 
   return (
     <main

@@ -194,9 +194,9 @@ textarea {
   font-weight: 400;
   color: rgba(245, 240, 232, 0.82);
   text-align: center;
-  line-height: 1.7;
-  max-width: 320px;
-  margin-bottom: 8px;
+  line-height: 1.5;
+  max-width: 520px;
+  margin-bottom: 14px;
   animation: fadeUp 0.8s ease 0.4s both;
 }
 

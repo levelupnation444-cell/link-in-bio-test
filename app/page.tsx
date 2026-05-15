@@ -94,7 +94,7 @@ export default async function Home() {
                     CLAIM YOUR FREE 7-DAY PURPOSE BLUEPRINT
                   </h2>
                   <p className="lun-hero-subtitle">
-                    Build discipline. Strengthen faith. Find direction.
+                    Faith. Discipline. Purpose. 10 minutes a day. Free.
                   </p>
                   <span className="lun-hero-cta">
                     START FREE <span aria-hidden>→</span>
